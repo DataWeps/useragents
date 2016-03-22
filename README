@@ -1,0 +1,7 @@
+Install instructions:
+
+bundle install
+bundle exec rake db:migrate
+whenever --update-crontab - with whenever gem or create cron task by hand
+bundle exec rake headers:add_headers - first fill with data
+bundle exec shotgun -p 3000

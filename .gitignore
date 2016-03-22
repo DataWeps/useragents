@@ -1,0 +1,11 @@
+Gemfile.lock
+.bundle
+*.ipr
+*.iws
+*.iml
+*.swp
+*.log
+*.html
+*.DS_Store
+.idea
+.ruby-version
