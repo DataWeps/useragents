@@ -10,14 +10,11 @@ class BrowserHeaders < Sinatra::Base
         date_parsed = Date.parse(params[:since])
         DB[:Headers].select(:header, :date).where { date >= date_parsed }.all
                     .to_json
-                    # .sort { |x, y| y[:date] <=> x[:date] }.to_json
       rescue ArgumentError
         { :error => 'Please provide date in YYYY-mm-dd format' }.to_json
       end
     else
-      DB[:Headers].select(:header, :date).all
-                  .to_json
-                  # .sort { |x, y| y[:date] <=> x[:date] }.to_json
+      DB[:Headers].select(:header, :date).all.to_json
     end
   end
 end
