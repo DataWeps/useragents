@@ -15,12 +15,14 @@ class DownloadHeaders
       last_update = update ? update.values.first : Date.new
       doc = Nokogiri::HTML(open(WEB[:url]))
       browsers_data = doc.xpath(WEB[:browser_path])
-      browsers_data.reverse_each do |browser|
-        user_agent = browser.at_xpath(WEB[:user_agent_path]).content.strip
-        date = clean_date(browser.at_xpath(WEB[:date_path]).content.strip)
-        if date >= last_update && accepted_header?(user_agent)
-          DB[:Headers].insert_ignore.insert(:header => user_agent, :date => date)
-        end
+      browsers_data.reverse_each { |browser| add_browser(browser, last_update) }
+    end
+
+    def add_browser(browser, last_update)
+      user_agent = browser.at_xpath(WEB[:user_agent_path]).content.strip
+      date = clean_date(browser.at_xpath(WEB[:date_path]).content.strip)
+      if date >= last_update && accepted_header?(user_agent)
+        DB[:Headers].insert_ignore.insert(:header => user_agent, :date => date)
       end
     end
 
