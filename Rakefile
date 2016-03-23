@@ -29,7 +29,10 @@ end
 desc 'Adds new browser headers'
 namespace :headers do
   task :add_headers => :database do
+    rows = DB[:Headers].count
     DownloadHeaders.add_headers
+    rows = DB[:Headers].count - rows
+    puts rows == 0 ? 'No new user agents' : "#{rows} new user agent added"
   end
 end
 
