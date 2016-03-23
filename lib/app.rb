@@ -3,9 +3,6 @@ require 'database'
 require 'json'
 
 class BrowserHeaders < Sinatra::Base
-  use Rack::Auth::Basic do |username, password|
-    username == 'admin' && password == 'admin'
-  end
   get '/' do
     content_type :json
     if params[:since]
