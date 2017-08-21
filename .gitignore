@@ -9,3 +9,4 @@ Gemfile.lock
 *.DS_Store
 .idea
 .ruby-version
+config/database.yml
