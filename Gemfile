@@ -6,6 +6,8 @@ gem 'sequel'
 gem 'mysql2'
 gem 'nokogiri', '~> 1.6.7'
 gem 'browser', '~> 2.0'
+gem 'rake'
+gem 'rubocop'
 
 group :development, :test do
   gem 'whenever'
