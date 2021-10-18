@@ -5,6 +5,7 @@ lib_dir    = File.expand_path('../lib', __FILE__)
 config_dir = File.expand_path('../config', __FILE__)
 $LOAD_PATH << lib_dir unless $LOAD_PATH.include?(lib_dir)
 $LOAD_PATH << config_dir
+require_relative 'config/initializers/figaro'
 require './lib/app'
 
 run BrowserHeaders

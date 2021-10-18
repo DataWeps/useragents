@@ -1,49 +1,26 @@
-require 'nokogiri'
-require 'open-uri'
-require 'browser'
+require 'typhoeus'
+require 'json'
 
 class DownloadHeaders
-  WEB = {
-    :url              => 'http://www.webuseragents.com/recent',
-    :browser_path     => '//div[@id="content"]/div[@style="margin-left:30px;"]',
-    :date_path        => './/span[@class="small"]',
-    :user_agent_path  => './/a'
-  }
+  BROWSER_HEADERS_URL = 'https://api.whatismybrowser.com/api/v2/user_agent_database_search?'\
+                        'operating_system_name=Windows&software_type=browser&software_type_specific=web-browser'\
+                        '&hardware_type=computer&order_by=first_seen_at%20desc&times_seen_min=10000'.freeze
+
   class << self
     def add_headers
-      update = DB[:Headers].order(:date).select(:date).last
-      last_update = update ? update.values.first : Date.new
-      doc = Nokogiri::HTML(open(WEB[:url]))
-      browsers_data = doc.xpath(WEB[:browser_path])
-      browsers_data.reverse_each { |browser| add_browser(browser, last_update) }
-    end
+      response = Typhoeus.get(BROWSER_HEADERS_URL, headers: { 'X-API-KEY' => ENV['what_is_my_browser_api_key'] })
+      raise 'Fetching of user agents failed' unless response.success?
 
-    def add_browser(browser, last_update)
-      user_agent = browser.at_xpath(WEB[:user_agent_path]).content.strip
-      date = clean_date(browser.at_xpath(WEB[:date_path]).content.strip)
-      if date >= last_update && accepted_header?(user_agent)
-        DB[:Headers].insert_ignore.insert(:header => user_agent, :date => date)
+      last_update = DB[:Headers].order(:date).select(:date).last
+      last_update = last_update ? last_update.values.first : Date.new
+      user_agents = JSON.parse(response.body)
+      user_agents['search_results']['user_agents'].each do |user_agent_info|
+        add_browser(user_agent_info['user_agent'], last_update)
       end
     end
 
-    def clean_date(date)
-      parsed = date.slice(date.index('On')..-1).gsub(/(?<=\d)(st|nd|rd|th)/, '')
-      Date.strptime(parsed, 'On %A the %d of %B, AD %Y')
-    end
-
-    def accepted_header?(user_agent)
-      browser = Browser.new(user_agent)
-      accepted_browser?(browser) && accepted_os?(browser)
-    end
-
-    def accepted_browser?(browser)
-      (browser.chrome? || browser.firefox? || browser.safari? ||
-          browser.ie? || browser.edge?)
-    end
-
-    def accepted_os?(browser)
-      (browser.platform.linux? || browser.platform.mac? ||
-        browser.platform.windows?)
+    def add_browser(browser, last_update)
+      DB[:Headers].insert_ignore.insert(header: browser, date: Date.today) if Date.today >= last_update
     end
   end
 end

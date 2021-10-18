@@ -1,6 +1,7 @@
 require 'bundler/setup'
 require 'sequel'
 require 'rubocop/rake_task'
+require_relative 'config/initializers/figaro'
 require './lib/download_headers'
 
 $LOAD_PATH << File.expand_path('../lib', __FILE__)

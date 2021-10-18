@@ -4,9 +4,9 @@ gem 'shotgun', '~> 0.9'
 gem 'sinatra', '~> 1.4'
 gem 'sequel'
 gem 'mysql2'
-gem 'nokogiri', '~> 1.6.7'
-gem 'browser', '~> 2.0'
+gem 'typhoeus', '~> 1.4'
 gem 'rake'
+gem 'figaro', '~> 1.2'
 gem 'rubocop'
 
 group :development, :test do

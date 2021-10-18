@@ -1,80 +1,93 @@
 AllCops:
-  Include:
-    - "**/*.gemspec"
-    - "**/Rakefile"
-    - "**/Gemfile"
-    - "**/Vagrantfile"
-    - "**/config.ru"
   Exclude:
-    - "vendor/**/*"
-    - "db/schema.rb"
+    - bin/*
+    - Guardfile
+    - vendor/**/*
+    - db/schema.rb
+  TargetRubyVersion: 3.0
+  NewCops: enable
 
-Style/AlignHash:
-  EnforcedLastArgumentHashStyle: ignore_implicit
-
-Metrics/BlockNesting:
+Documentation:
   Enabled: false
 
-Style/CaseIndentation:
-  IndentOneStep: true
+Naming/RescuedExceptionsVariableName:
+  PreferredName: exception
+
+Metrics/BlockLength:
+  CountComments: false
+  Exclude:
+    - db/**/*
+    - spec/**/*
+    - test/**/*
+    - config/routes.rb
+
+Metrics/ModuleLength:
+  CountComments: false
+
+Metrics/ClassLength:
+  CountComments: false
+
+Metrics/MethodLength:
+  Max: 20
+  CountComments: false
+  Exclude:
+    - db/**/*
+
+Metrics/AbcSize:
+  Max: 30
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+Rails:
+  Enabled: true
+
+Layout/CommentIndentation:
+  Enabled: false
+
+Layout/LineLength:
+  IgnoreCopDirectives: true
+  AllowURI: true
+  Max: 120
+  Exclude:
+    - spec/**/*
+    - Gemfile
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
 
 Style/ClassAndModuleChildren:
   Enabled: false
 
-Style/Documentation:
+Style/CommentedKeyword:
   Enabled: false
 
-Style/Encoding:
-  EnforcedStyle: when_needed
-
-Style/FormatString:
+Style/DoubleNegation:
   Enabled: false
 
-Style/GuardClause:
+Style/NumericPredicate:
+  AutoCorrect: true
+
+# https://github.com/rubocop-hq/rubocop/issues/1520
+Style/Lambda:
+  EnforcedStyle: literal
+
+Style/RegexpLiteral:
+  AllowInnerSlashes: false
+  EnforcedStyle: mixed
+
+Style/SymbolArray:
   Enabled: false
 
-Style/IfUnlessModifier:
-  MaxLineLength: 82
+Style/StringLiterals:
+  Exclude:
+    - spec/**/*
+    - test/**/*
+    - db/schema.rb
 
-Style/IndentHash:
-  EnforcedStyle: consistent
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - spec/**/*
 
-Style/LambdaCall:
-  EnforcedStyle: call
-
-Metrics/LineLength:
-  Max: 82
-
-Style/NonNilCheck:
-  IncludeSemanticChanges: true
-
-Metrics/MethodLength:
-  Enabled: false
-
-Style/PredicateName:
-  NamePrefixBlacklist:
-    - is_
-
-Style/AlignParameters:
-  Enabled: false
-
-Style/RedundantReturn:
-  AllowMultipleReturnValues: true
-
-Style/SingleLineBlockParams:
-  Enabled: false
-
-Style/WhileUntilModifier:
-  MaxLineLength: 120
-
-Style/SignalException:
-  Enabled: false
-
-Style/HashSyntax:
-  Enabled: false
-
-Style/AccessModifierIndentation:
-  EnforcedStyle: outdent
-
-Style/MutableConstant:
-  Enabled: false
+Rails/EnvironmentVariableAccess:
+  AllowReads: true
