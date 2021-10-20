@@ -2,9 +2,9 @@ require 'typhoeus'
 require 'json'
 
 class DownloadHeaders
-  BROWSER_HEADERS_URL = 'https://api.whatismybrowser.com/api/v2/user_agent_database_search?'\
-                        'operating_system_name=Windows&software_type=browser&software_type_specific=web-browser'\
-                        '&hardware_type=computer&order_by=first_seen_at%20desc&times_seen_min=10000'.freeze
+  BROWSER_HEADERS_URL = 'https://api.whatismybrowser.com/api/v2/user_agent_database_search?software_type=browser&' \
+                        'software_type_specific=web-browser&hardware_type=computer&order_by=first_seen_at%20desc&' \
+                        'times_seen_min=1000'.freeze
 
   class << self
     def add_headers
